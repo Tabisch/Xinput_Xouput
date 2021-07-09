@@ -46,7 +46,7 @@ void loop() {
   
   if(selectionshort == 15 || selectionshort == 16)
   {
-    
+    handleTriggers();
   }
 
   if(selectionshort == 17 || selectionshort == 18)
@@ -115,6 +115,11 @@ void handleButtons()
   }
 }
 
+void handleTriggers()
+{
+  XInput.setTrigger(selectionshort, messageshort);
+}
+
 void handleJoySticks()
 {
   if(stickXvalueSet)
@@ -129,7 +134,7 @@ void handleJoySticks()
     }
 
     stickXvalueSet = false;
-    messageshort = 0 
+    messageshort = 0 ;
   }
   else
   {
