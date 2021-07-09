@@ -24,6 +24,11 @@ void handleDesync()
 
 void loop() {
   // put your main code here, to run repeatedly:
+  if(!Serial1.available())
+  {
+    return;
+  }
+  
   readDataFromSerial1();
 
   if(desynced)
@@ -34,8 +39,7 @@ void loop() {
 
   if(selectionshort == -1)
   {
-    Serial1.print("Keep Alive");
-    Serial1.write('\n');
+    Serial1.println("Keep Alive");
     return;
   }
 
@@ -54,8 +58,7 @@ void loop() {
     handleJoySticks();
   }
   
-  Serial1.print(String(selectionshort));
-  Serial1.write('\n');
+  Serial1.println(String(selectionshort));
 }
 
 void readDataFromSerial1()
@@ -68,8 +71,7 @@ void readDataFromSerial1()
   { 
     if(millis() - StartTime >= 1000)
     {
-      Serial1.print("Desync");
-      Serial1.write('\n');
+      Serial1.println("Desync");
 
       handleDesync();
       return;
