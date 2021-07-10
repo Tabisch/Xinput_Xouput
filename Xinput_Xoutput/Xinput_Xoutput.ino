@@ -8,7 +8,7 @@ bool stickXvalueSet;
 bool desynced = false;
 
 void setup() {
-  Serial1.begin(9600);
+  Serial1.begin(19200);
   XInput.begin();
 }
 
@@ -16,10 +16,13 @@ void handleDesync()
 {
   dataIn = "";
   messageshort = 0;
-  selectionshort = 0;
   stickXValue = 0;
   stickXvalueSet = false;
   desynced = true;
+  selectionshort = -2;
+  writeAwnser();
+
+  selectionshort = 0;
 }
 
 void loop() {
@@ -39,25 +42,31 @@ void loop() {
 
   if(selectionshort == -1)
   {
-    Serial1.println("Keep Alive");
+    writeAwnser();
     return;
   }
 
   if(selectionshort < 15)
   {
     handleButtons();
+    writeAwnser();
   }
-  
+
   if(selectionshort == 15 || selectionshort == 16)
   {
     handleTriggers();
+    writeAwnser();
   }
 
   if(selectionshort == 17 || selectionshort == 18)
   {
     handleJoySticks();
+    writeAwnser();
   }
-  
+}
+
+void writeAwnser()
+{
   Serial1.println(String(selectionshort));
 }
 
@@ -71,8 +80,6 @@ void readDataFromSerial1()
   { 
     if(millis() - StartTime >= 1000)
     {
-      Serial1.println("Desync");
-
       handleDesync();
       return;
     }
